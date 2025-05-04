@@ -58,6 +58,8 @@ Route::post('/pedidos/{pedido}/suministros/lote', [PedidoController::class, 'agr
 // Eliminar un suministro específico de un pedido
 Route::delete('/pedidos/{pedido}/suministros/{suministro}', [PedidoController::class, 'eliminarSuministro']);
 
+//Endpoint para obtener el estado de un pedido
+Route::get('/pedidos/{pedido}/estado', [PedidoController::class, 'obtenerEstado']);
 
 
 

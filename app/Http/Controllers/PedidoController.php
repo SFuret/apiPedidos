@@ -200,6 +200,19 @@ class PedidoController extends Controller
             return response()->json(['message' => 'Suministro eliminado del pedido correctamente']);
         }
 
+
+        //Obtener estado de un pedido
+        public function obtenerEstado($noPedido): JsonResponse
+        {
+            $pedido = Pedido::findOrFail($noPedido);
+
+            return response()->json([
+                'noPedido' => $pedido->noPedido,
+                'estado'   => $pedido->estado,
+            ], 200);
+        }
+
+
     }
 
 
