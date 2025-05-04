@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 
+// Proteger las rutas que solo entren los usuarios autenticados
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Endpoint para obtener token
 Route::post('/login', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
@@ -27,11 +30,28 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
+// CRUD de mesas
 Route::apiResource('mesas', MesaController::class);
 
+// CRUD de usuarios
 Route::apiResource('users', UserController::class);
 
+// CRUD de suministros
 Route::apiResource('suministros', SuministroController::class);
 
+// CRUD de pedidos
 Route::apiResource('pedidos', PedidoController::class);
+
+//Route::get('pedidos/{id}/suministros', [PedidoController::class, 'suministros']); //obtengo suministros que tiene un pedido
+// Endpoint para listar suministros de un pedido:
+Route::get('pedidos/{noPedido}/suministros', [PedidoController::class, 'suministros']);
+
+// Para agregar un solo suministro
+Route::post('/pedidos/{pedido}/suministros', [PedidoController::class, 'agregarSuministro']);
+
+// Para agregar múltiples suministros
+Route::post('/pedidos/{pedido}/suministros/lote', [PedidoController::class, 'agregarSuministros']);
+
+
+
 

@@ -27,4 +27,23 @@ class Pedido extends Model
             $pedido->saveQuietly();
         });
     }
+
+    // Relación con la tabla pivote
+    public function pedidoSuministros()
+    {
+        return $this->hasMany(PedidoSuministro::class, 'pedido_id');
+    }
+
+    // Relación directa con suministros a través de la pivote
+    public function suministros()
+    {
+        return $this->belongsToMany(
+            Suministro::class,
+            'pedido_suministro',
+            'pedido_id',
+            'suministro_id'
+        )->withPivot('cantidad', 'notas')
+         ->withTimestamps();
+    }
+
 }

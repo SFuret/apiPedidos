@@ -54,4 +54,70 @@ class PedidoController extends Controller
 
         return response()->json(['message' => 'Pedido eliminado']);
     }
-}
+
+     // GET /api/pedidos/{noPedido}/suministros
+     public function suministros($noPedido): JsonResponse
+     {
+         $pedido = Pedido::with('suministros')->findOrFail($noPedido);
+
+         $datos = $pedido->suministros->map(function ($s) {
+             return [
+                 'id'       => $s->id,
+                 'nombre'   => $s->nombre,
+                 'precio'   => $s->precio,
+                 'cantidad' => $s->pivot->cantidad,
+                 'notas'    => $s->pivot->notas,
+                 'total'    => round($s->precio * $s->pivot->cantidad, 2),
+             ];
+         });
+
+         return response()->json([
+             'pedido'      => $pedido->noPedido,
+             'suministros' => $datos,
+         ]);
+     }
+
+
+     //POST Agregar 1 suministro a un pedido existente
+     public function agregarSuministro(Request $request, $pedidoId)
+     {
+         $request->validate([
+             'suministro_id' => 'required|exists:suministros,id',
+             'cantidad' => 'required|integer|min:1',
+             'notas' => 'nullable|string',
+         ]);
+
+         $pedido = Pedido::findOrFail($pedidoId);
+
+         $pedido->suministros()->attach($request->suministro_id, [
+             'cantidad' => $request->cantidad,
+             'notas' => $request->notas,
+         ]);
+
+         return response()->json(['message' => 'Suministro añadido correctamente'], 201);
+     }
+
+       //POST  Agregar varios suministro a la vez a un pedido existente
+     public function agregarSuministros(Request $request, $pedidoId)
+     {
+         $request->validate([
+             'suministros' => 'required|array|min:1',
+             'suministros.*.suministro_id' => 'required|exists:suministros,id',
+             'suministros.*.cantidad' => 'required|integer|min:1',
+             'suministros.*.notas' => 'nullable|string',
+         ]);
+
+         $pedido = Pedido::findOrFail($pedidoId);
+
+         foreach ($request->suministros as $item) {
+             $pedido->suministros()->attach($item['suministro_id'], [
+                 'cantidad' => $item['cantidad'],
+                 'notas' => $item['notas'] ?? null,
+             ]);
+         }
+
+         return response()->json(['message' => 'Suministros añadidos correctamente'], 201);
+     }
+    }
+
+

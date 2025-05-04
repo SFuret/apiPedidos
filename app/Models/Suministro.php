@@ -21,4 +21,6 @@ class Suministro extends Model
         'fechaAlta',
         'cantidad',
     ];
+
+
 }

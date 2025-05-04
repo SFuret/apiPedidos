@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PedidoSuministro;
 use App\Models\Suministro;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -64,4 +65,10 @@ class SuministroController extends Controller
         $suministro->delete();
         return response()->json(['message' => 'Suministro eliminado']);
     }
+
+
+    public function suministros()
+{
+    return $this->hasMany(PedidoSuministro::class, 'pedido_id');
+}
 }
