@@ -27,4 +27,4 @@ class PedidoSuministro extends Model
     {
         return $this->belongsTo(Suministro::class, 'suministro_id');
     }
-}
+} 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -54,6 +55,70 @@ class PedidoController extends Controller
 
         return response()->json(['message' => 'Pedido eliminado']);
     }
+
+    //Agregar un pedido completo con suministros incluídos
+    public function crearPedidoConSuministros(Request $request): JsonResponse
+{
+    $validated = $request->validate([
+        'idMesa'      => 'required|exists:mesas,id',
+        'idUsuario'   => 'required|exists:users,id',
+        'estado'      => 'required|string|max:50',
+        'suministros' => 'required|array|min:1',
+        'suministros.*.suministro_id' => 'required|exists:suministros,id',
+        'suministros.*.cantidad'      => 'required|integer|min:1',
+        'suministros.*.notas'         => 'nullable|string',
+    ]);
+
+    DB::beginTransaction();
+    try {
+        // 1. Crear el pedido
+        $pedido = Pedido::create([
+            'idMesa'    => $validated['idMesa'],
+            'idUsuario' => $validated['idUsuario'],
+            'estado'    => $validated['estado'],
+        ]);
+
+        // 2. Asociar los suministros
+        foreach ($validated['suministros'] as $item) {
+            $pedido->suministros()->attach($item['suministro_id'], [
+                'cantidad' => $item['cantidad'],
+                'notas'    => $item['notas'] ?? null,
+            ]);
+        }
+
+        DB::commit();
+
+        // Cargar suministros y devolver respuesta
+        $pedido->load('suministros');
+
+        $datos = $pedido->suministros->map(function ($s) {
+            return [
+                'id'       => $s->id,
+                'nombre'   => $s->nombre,
+                'precio'   => $s->precio,
+                'cantidad' => $s->pivot->cantidad,
+                'notas'    => $s->pivot->notas,
+                'total'    => round($s->precio * $s->pivot->cantidad, 2),
+            ];
+        });
+
+        return response()->json([
+           // 'pedido'      => $pedido->codigo, // ← Usa el accessor
+            'pedido'      => $pedido->noPedido,
+            'suministros' => $datos,
+        ], 201);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'error' => 'Error al crear el pedido',
+            'detalle' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
 
      // GET /api/pedidos/{noPedido}/suministros
      public function suministros($noPedido): JsonResponse
@@ -118,6 +183,23 @@ class PedidoController extends Controller
 
          return response()->json(['message' => 'Suministros añadidos correctamente'], 201);
      }
+
+     //DELETE Eliminar un suministro de un pedido existente
+     public function eliminarSuministro($pedidoId, $suministroId)
+        {
+            $pedido = Pedido::findOrFail($pedidoId);
+
+            // Verificamos si existe la relación
+            if (!$pedido->suministros()->where('suministro_id', $suministroId)->exists()) {
+                return response()->json(['message' => 'Suministro no encontrado en el pedido'], 404);
+            }
+
+            // Desvincula el suministro del pedido
+            $pedido->suministros()->detach($suministroId);
+
+            return response()->json(['message' => 'Suministro eliminado del pedido correctamente']);
+        }
+
     }
 
 

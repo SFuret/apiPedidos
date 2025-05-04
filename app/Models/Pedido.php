@@ -13,9 +13,10 @@ class Pedido extends Model
     public $incrementing = true;               // ya viene por defecto, pero lo dejamos explícito
     protected $keyType = 'int';
 
+
     protected $fillable = ['idMesa','idUsuario','estado'];
 
-    protected static function boot()
+   /* protected static function boot()
     {
         parent::boot();
 
@@ -26,7 +27,7 @@ class Pedido extends Model
             $pedido->timestamps = false;
             $pedido->saveQuietly();
         });
-    }
+    }*/
 
     // Relación con la tabla pivote
     public function pedidoSuministros()
@@ -45,5 +46,6 @@ class Pedido extends Model
         )->withPivot('cantidad', 'notas')
          ->withTimestamps();
     }
+
 
 }

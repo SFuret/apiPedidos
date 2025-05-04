@@ -42,6 +42,9 @@ Route::apiResource('suministros', SuministroController::class);
 // CRUD de pedidos
 Route::apiResource('pedidos', PedidoController::class);
 
+//Endpoint crear un pedido completo con suminitros incluídos
+Route::post('/pedidos-completos', [PedidoController::class, 'crearPedidoConSuministros']);
+
 //Route::get('pedidos/{id}/suministros', [PedidoController::class, 'suministros']); //obtengo suministros que tiene un pedido
 // Endpoint para listar suministros de un pedido:
 Route::get('pedidos/{noPedido}/suministros', [PedidoController::class, 'suministros']);
@@ -51,6 +54,9 @@ Route::post('/pedidos/{pedido}/suministros', [PedidoController::class, 'agregarS
 
 // Para agregar múltiples suministros
 Route::post('/pedidos/{pedido}/suministros/lote', [PedidoController::class, 'agregarSuministros']);
+
+// Eliminar un suministro específico de un pedido
+Route::delete('/pedidos/{pedido}/suministros/{suministro}', [PedidoController::class, 'eliminarSuministro']);
 
 
 
