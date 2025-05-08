@@ -10,7 +10,7 @@ class Suministro extends Model
    // protected $table = 'suministro';
 
     protected $fillable = [
-        'numPedido',
+        //'numPedido',
         'nombre',
         'precio',
         'categoria',

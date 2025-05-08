@@ -17,7 +17,7 @@ class SuministroController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'numPedido' => 'required|string|unique:suministros',
+           // 'numPedido' => 'required|string|unique:suministros',
             'nombre' => 'required|string|max:100',
             'precio' => 'required|numeric',
             'categoria' => 'nullable|string|max:50',
@@ -43,7 +43,7 @@ class SuministroController extends Controller
     {
         $suministro = Suministro::findOrFail($id);
         $validated = $request->validate([
-            'numPedido' => 'sometimes|string|unique:suministros,numPedido,' . $suministro->id,
+           // 'numPedido' => 'sometimes|string|unique:suministros,numPedido,' . $suministro->id,
             'nombre' => 'sometimes|string|max:100',
             'precio' => 'sometimes|numeric',
             'categoria' => 'nullable|string|max:50',

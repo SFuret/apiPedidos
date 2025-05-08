@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('cantidad')->nullable(); // cantidad INT NULLABLE
             $table->timestamps(); // created_at y updated_at (si quieres)
         });
+        /*Modificar la migracion para que la fecha de alta sea current time en la BDD
+        y que no incluye numPedido  */
     }
 
     /**
