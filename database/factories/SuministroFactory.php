@@ -21,7 +21,7 @@ class SuministroFactory extends Factory
         $nombre = $this->faker->randomElement($categoriasConProductos[$categoria]);
 
         return [
-            'numPedido' => $this->faker->unique()->bothify('PED-####'),
+           // 'numPedido' => $this->faker->unique()->bothify('PED-####'),
             'nombre' => $nombre,
             'precio' => $this->faker->randomFloat(2, 1, 100),
             'categoria' => $categoria,
@@ -29,7 +29,7 @@ class SuministroFactory extends Factory
             'ingredientes' => $this->faker->words(5, true),
             'marca' => $this->faker->company(),
             'fechaCaducidad' => $this->faker->dateTimeBetween('now', '+1 year'),
-            'fechaAlta' => $this->faker->date(),
+           // 'fechaAlta' => $this->faker->date(),
             'cantidad' => $this->faker->numberBetween(1, 100),
         ];
     }
