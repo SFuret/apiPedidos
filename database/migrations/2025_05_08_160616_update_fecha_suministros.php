@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
 
-    public function up(): void
+    /*public function up(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
          //   $table->dropColumn('fechaAlta'); // Elimina la columna fechaAlta si existe
@@ -20,6 +20,6 @@ return new class extends Migration
         Schema::table('suministros', function (Blueprint $table) {
             $table->date('fechaAlta')->nullable(); // Restaura la columna fechaAlta
         });
-    }
+    }*/
 };
 
