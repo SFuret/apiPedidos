@@ -7,7 +7,6 @@
       "php artisan config:cache",
       "php artisan migrate --force",
       "php artisan optimize",
-      "php artisan storage:link",
       "chmod -R 775 bootstrap/cache"
     ]
   },
