@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 
 // Proteger las rutas que solo entren los usuarios autenticados
@@ -61,5 +62,10 @@ Route::delete('/pedidos/{pedido}/suministros/{suministro}', [PedidoController::c
 //Endpoint para obtener el estado de un pedido
 Route::get('/pedidos/{pedido}/estado', [PedidoController::class, 'obtenerEstado']);
 
+//ruta para ejecutar las migraciones
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+    return 'Migraciones y seeders ejecutados';
+});
 
 
