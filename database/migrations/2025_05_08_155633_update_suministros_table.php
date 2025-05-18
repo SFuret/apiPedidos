@@ -13,7 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
-            $table->dropColumn('numPedido'); // Eliminar columna
+          if (Schema::hasColumn('suministros', 'numPedido')) {
+           $table->dropColumn('numPedido');
+        }
+            //  $table->dropColumn('numPedido'); // Eliminar columna
         });
 
         // Modificar fechaAlta para que tenga valor por defecto
@@ -26,7 +29,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
-            $table->string('numPedido', 50)->unique();
+           // $table->string('numPedido', 50)->unique();
+            if (Schema::hasColumn('suministros', 'numPedido')) {
+         $table->string('numPedido', 50)->unique();
+        }
         });
 
         // Quitar el valor por defecto de fechaAlta
