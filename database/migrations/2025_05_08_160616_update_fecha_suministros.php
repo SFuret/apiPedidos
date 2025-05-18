@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
-            $table->dropColumn('fechaAlta'); // Elimina la columna fechaAlta si existe
+         //   $table->dropColumn('fechaAlta'); // Elimina la columna fechaAlta si existe
             $table->date('fechaCaducidad')->nullable()->change(); // Asegura que sea tipo DATE y nullable
         });
     }

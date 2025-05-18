@@ -10,7 +10,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+  /*  public function up(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
           if (Schema::hasColumn('suministros', 'numPedido')) {
@@ -20,13 +20,13 @@ return new class extends Migration
         });
 
         // Modificar fechaAlta para que tenga valor por defecto
-        DB::statement("ALTER TABLE suministros MODIFY fechaAlta DATE DEFAULT CURRENT_DATE");
+      DB::statement("ALTER TABLE suministros MODIFY fechaAlta DATE DEFAULT CURRENT_DATE");
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+  /*  public function down(): void
     {
         Schema::table('suministros', function (Blueprint $table) {
            // $table->string('numPedido', 50)->unique();
@@ -37,5 +37,5 @@ return new class extends Migration
 
         // Quitar el valor por defecto de fechaAlta
         DB::statement("ALTER TABLE suministros MODIFY fechaAlta DATE NULL");
-    }
+    }*/
 };
