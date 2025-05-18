@@ -68,4 +68,5 @@ Route::get('/run-migrations', function () {
     return 'Migraciones y seeders ejecutados';
 });
 
+Route::get('/', fn () => 'Hola desde Railway');
 
