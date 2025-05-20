@@ -62,11 +62,17 @@ Route::delete('/pedidos/{pedido}/suministros/{suministro}', [PedidoController::c
 //Endpoint para obtener el estado de un pedido
 Route::get('/pedidos/{pedido}/estado', [PedidoController::class, 'obtenerEstado']);
 
+
+//ruta para obtener las categorias de los suministros
+Route::get('/categorias', [SuministroController::class, 'obtenerCategorias']);
+
 //ruta para ejecutar las migraciones
-Route::get('/run-migrations', function () {
+/*Route::get('/run-migrations', function () {
     Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
     return 'Migraciones y seeders ejecutados';
-});
+});*/
 
 Route::get('/', fn () => 'Hola desde Railway');
+
+
 

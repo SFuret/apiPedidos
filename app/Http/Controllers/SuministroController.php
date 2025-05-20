@@ -6,6 +6,7 @@ use App\Models\PedidoSuministro;
 use App\Models\Suministro;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class SuministroController extends Controller
 {
@@ -59,6 +60,8 @@ class SuministroController extends Controller
         return response()->json($suministro);
     }
 
+
+
     public function destroy($id): JsonResponse
     {
         $suministro= Suministro::findOrFail($id);
@@ -66,9 +69,23 @@ class SuministroController extends Controller
         return response()->json(['message' => 'Suministro eliminado']);
     }
 
+    //obtener las distintas categorias
+   public function obtenerCategorias(): JsonResponse
+    {
+     //  $categorias = DB::select('SELECT DISTINCT categoria FROM suministros');
+      $categorias = DB::table('suministros')
+        ->select('categoria')
+        ->distinct()
+        ->get()
+        ->pluck('categoria'); 
+        return response()->json($categorias);
+    }
+
 
     public function suministros()
 {
     return $this->hasMany(PedidoSuministro::class, 'pedido_id');
 }
+
+
 }
