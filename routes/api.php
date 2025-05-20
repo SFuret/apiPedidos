@@ -66,6 +66,10 @@ Route::get('/pedidos/{pedido}/estado', [PedidoController::class, 'obtenerEstado'
 //ruta para obtener las categorias de los suministros
 Route::get('/categorias', [SuministroController::class, 'obtenerCategorias']);
 
+//obtener sumistros de una categoria
+Route::get('/suministros/categoria/{categoria}', [SuministroController::class, 'porCategoria']);
+
+
 //ruta para ejecutar las migraciones
 /*Route::get('/run-migrations', function () {
     Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);

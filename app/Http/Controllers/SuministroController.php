@@ -77,7 +77,7 @@ class SuministroController extends Controller
         ->select('categoria')
         ->distinct()
         ->get()
-        ->pluck('categoria'); 
+        ->pluck('categoria');
         return response()->json($categorias);
     }
 
@@ -87,5 +87,12 @@ class SuministroController extends Controller
     return $this->hasMany(PedidoSuministro::class, 'pedido_id');
 }
 
+//obtener todos los suministros de una determinada categoria
+public function porCategoria(string $categoria): JsonResponse
+{
+    $suministros = Suministro::where('categoria', $categoria)->get();
+
+    return response()->json($suministros);
+}
 
 }
