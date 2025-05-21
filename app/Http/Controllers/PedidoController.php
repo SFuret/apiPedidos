@@ -228,7 +228,7 @@ class PedidoController extends Controller
                         return [
                             'noPedido' => $pedido->noPedido,
                             'nombreMesa' => optional($pedido->mesa)->nombre,
-                            'nombreUsuario' => optional($pedido->usuario)->name, 
+                            'nombreUsuario' => optional($pedido->usuario)->name,
                             'fechaAlta' => $pedido->fechaAlta,
                         ];
                     });
@@ -236,7 +236,26 @@ class PedidoController extends Controller
                 return response()->json($pedidos);
             }
 
+        //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
+       public function detallePedidoPorUbicacion($id, Request $request)
+{
+    $ubicacion = $request->input('ubicacion', 'cocina'); // por defecto: cocina
 
+    $pedido = Pedido::with(['suministros' => function ($query) use ($ubicacion) {
+        $query->where('ubicacion', $ubicacion);
+    }])->findOrFail($id);
+
+    $detalle = $pedido->suministros->map(function ($suministro) {
+        return [
+            'idSuministro' => $suministro->id,
+            'nombreSuministro' => $suministro->nombre,
+            'cantidad' => $suministro->pivot->cantidad,
+            'notas' => $suministro->pivot->notas,
+        ];
+    });
+
+    return response()->json($detalle);
+}
 
     }
 

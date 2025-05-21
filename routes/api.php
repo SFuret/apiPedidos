@@ -73,6 +73,11 @@ Route::get('/suministros/categoria/{categoria}', [SuministroController::class, '
 //Obtener los pedidos de bar/cocina según la obicación que le pase
 Route::get('/pedidosubicacion', [PedidoController::class, 'listarPedidosPorUbicacion']);
 
+//Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
+Route::get('/pedidodetalles/{id}/detalles', [PedidoController::class, 'detallePedidoPorUbicacion']);
+
+
+
 
 
 
