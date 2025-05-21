@@ -212,6 +212,31 @@ class PedidoController extends Controller
             ], 200);
         }
 
+        //Obtener los pedidos de bar/cocina según la obicación que le pase
+        public function listarPedidosPorUbicacion(Request $request)
+            {
+                $ubicacion = $request->input('ubicacion');
+
+                $pedidos = Pedido::where('estado', 'abierto')
+                    ->whereHas('suministros', function ($query) use ($ubicacion) {
+                        $query->where('ubicacion', $ubicacion);
+                    })
+                    ->orderBy('fechaAlta', 'asc')
+                    ->with(['mesa', 'usuario'])
+                    ->get()
+                    ->map(function ($pedido) {
+                        return [
+                            'noPedido' => $pedido->noPedido,
+                            'nombreMesa' => optional($pedido->mesa)->nombre,
+                            'nombreUsuario' => optional($pedido->usuario)->name, 
+                            'fechaAlta' => $pedido->fechaAlta,
+                        ];
+                    });
+
+                return response()->json($pedidos);
+            }
+
+
 
     }
 

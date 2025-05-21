@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mesa;
+use App\Models\User;
 
 class Pedido extends Model
 {
@@ -16,18 +18,6 @@ class Pedido extends Model
 
     protected $fillable = ['idMesa','idUsuario','estado'];
 
-   /* protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($pedido) {
-            // Una vez creado y con ID (noPedido) asignado, actualizamos el formato.
-            $pedido->noPedido = 'PED-' . str_pad($pedido->noPedido, 4, '0', STR_PAD_LEFT);
-            // Desactivar temporalmente el guardado automático de timestamps
-            $pedido->timestamps = false;
-            $pedido->saveQuietly();
-        });
-    }*/
 
     // Relación con la tabla pivote
     public function pedidoSuministros()
@@ -45,6 +35,17 @@ class Pedido extends Model
             'suministro_id'
         )->withPivot('cantidad', 'notas')
          ->withTimestamps();
+    }
+
+    //para que funcione el mostrar nombre mesa en vez de id y lo mismo con usuario
+        public function mesa()
+    {
+        return $this->belongsTo(Mesa::class, 'idMesa');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'idUsuario');
     }
 
 

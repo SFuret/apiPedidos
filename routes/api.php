@@ -70,6 +70,12 @@ Route::get('/categorias', [SuministroController::class, 'obtenerCategorias']);
 Route::get('/suministros/categoria/{categoria}', [SuministroController::class, 'porCategoria']);
 
 
+//Obtener los pedidos de bar/cocina según la obicación que le pase
+Route::get('/pedidosubicacion', [PedidoController::class, 'listarPedidosPorUbicacion']);
+
+
+
+
 //ruta para ejecutar las migraciones
 /*Route::get('/run-migrations', function () {
     Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);

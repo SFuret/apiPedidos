@@ -28,6 +28,7 @@ class SuministroController extends Controller
             'fechaCaducidad' => 'nullable|date',
             'fechaAlta' => 'nullable|date',
             'cantidad' => 'required|integer',
+            'ubicacion' => 'required|in:bar,cocina',
         ]);
 
         $suministro= Suministro::create($validated);

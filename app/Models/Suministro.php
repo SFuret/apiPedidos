@@ -20,6 +20,7 @@ class Suministro extends Model
         'fechaCaducidad',
         'fechaAlta',
         'cantidad',
+        'ubicacion'
     ];
 
 
