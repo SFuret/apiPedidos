@@ -214,27 +214,35 @@ class PedidoController extends Controller
 
         //Obtener los pedidos de bar/cocina según la obicación que le pase
         public function listarPedidosPorUbicacion(Request $request)
-            {
-                $ubicacion = $request->input('ubicacion');
+{
+    $ubicacion = $request->input('ubicacion');
 
-                $pedidos = Pedido::where('estado', 'abierto')
-                    ->whereHas('suministros', function ($query) use ($ubicacion) {
-                        $query->where('ubicacion', $ubicacion);
-                    })
-                    ->orderBy('fechaAlta', 'asc')
-                    ->with(['mesa', 'usuario'])
-                    ->get()
-                    ->map(function ($pedido) {
-                        return [
-                            'noPedido' => $pedido->noPedido,
-                            'nombreMesa' => optional($pedido->mesa)->nombre,
-                            'nombreUsuario' => optional($pedido->usuario)->name,
-                            'fechaAlta' => $pedido->fechaAlta,
-                        ];
-                    });
+    $pedidos = Pedido::where('estado', 'abierto')
+        ->whereHas('suministros', function ($query) use ($ubicacion) {
+            $query->where('ubicacion', $ubicacion);
+        })
+        ->orderBy('fechaAlta', 'asc')
+        ->with(['mesa', 'usuario'])
+        ->get();
 
-                return response()->json($pedidos);
-            }
+    if ($pedidos->isEmpty()) {
+        return response()->json([
+            'mensaje' => 'No hay pedidos pendientes'
+        ], 200); // o 404 si lo prefieres
+    }
+
+    $resultado = $pedidos->map(function ($pedido) {
+        return [
+            'noPedido' => $pedido->noPedido,
+            'nombreMesa' => optional($pedido->mesa)->nombre,
+            'nombreUsuario' => optional($pedido->usuario)->name,
+            'fechaAlta' => $pedido->fechaAlta,
+        ];
+    });
+
+    return response()->json($resultado);
+}
+
 
         //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
        public function detallePedidoPorUbicacion($id, Request $request)
