@@ -11,10 +11,25 @@ use Illuminate\Http\JsonResponse;
 class MesaController extends Controller
 {
     // GET /api/mesas
-    public function index(): JsonResponse
-    {
-        return response()->json(Mesa::all());
-    }
+
+public function index(): JsonResponse
+{
+    $mesas = Mesa::all()->map(function ($mesa) {
+        return [
+            'id' => $mesa->id,
+            'nombre' => $mesa->nombre,
+            'barra' => $mesa->barra ? 'sí' : 'no',
+            'fecha alta' => $mesa->created_at ? $mesa->created_at->format('Y-m-d H:i') : null,
+            'última actualización' => $mesa->updated_at ? $mesa->updated_at->format('Y-m-d H:i') : null,
+        ];
+    });
+
+    return response()->json($mesas);
+}
+    // public function index(): JsonResponse
+    // {
+    //     return response()->json(Mesa::all());
+    // }
 
     // POST /api/mesas
     public function store(Request $request): JsonResponse

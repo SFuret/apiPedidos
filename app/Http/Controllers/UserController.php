@@ -11,7 +11,18 @@ class UserController extends Controller
 {
     public function index()
     {
-        return User::all();
+      //  return User::all();
+      $usuarios = User::all()->map(function ($user) {
+        return [
+            'id' => $user->id,
+            'nombre' => $user->name,
+            'email' => $user->email,
+             'fecha alta' => $user->created_at ? $user->created_at->format('Y-m-d H:i') : null,
+            'última actualización' => $user->updated_at ? $user->updated_at->format('Y-m-d H:i') : null,
+        ];
+    });
+
+    return response()->json($usuarios);
     }
 
     public function store(Request $request)

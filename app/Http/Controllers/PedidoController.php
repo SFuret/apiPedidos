@@ -9,10 +9,25 @@ use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
-    public function index(): JsonResponse
-    {
-        return response()->json(Pedido::all());
-    }
+    // public function index(): JsonResponse
+    // {
+    //     return response()->json(Pedido::all());
+    // }
+public function index(): JsonResponse
+{
+    $pedidos = Pedido::with(['mesa', 'usuario'])->get()->map(function ($pedido) {
+        return [
+            'noPedido' => $pedido->noPedido,
+            'mesa' => $pedido->mesa ? $pedido->mesa->nombre : null,
+            'usuario' => $pedido->usuario ? $pedido->usuario->name : null,
+            'estado' => $pedido->estado,
+            'fecha alta' => $pedido->created_at ? $pedido->created_at->format('Y-m-d H:i') : null,
+            'última actualización' => $pedido->updated_at ? $pedido->updated_at->format('Y-m-d H:i') : null,
+        ];
+    });
+
+    return response()->json($pedidos);
+}
 
     public function store(Request $request): JsonResponse
     {
@@ -213,7 +228,7 @@ class PedidoController extends Controller
         }
 
         //Obtener los pedidos de bar/cocina según la obicación que le pase
-        public function listarPedidosPorUbicacion(Request $request)
+      public function listarPedidosPorUbicacion(Request $request)
 {
     $ubicacion = $request->input('ubicacion');
 
@@ -234,15 +249,36 @@ class PedidoController extends Controller
     $resultado = $pedidos->map(function ($pedido) {
         return [
             'noPedido' => $pedido->noPedido,
-            'nombreMesa' => optional($pedido->mesa)->nombre,
-            'nombreUsuario' => optional($pedido->usuario)->name,
-            'fechaAlta' => $pedido->fechaAlta,
+            'Mesa' => optional($pedido->mesa)->nombre,
+            'Usuario' => optional($pedido->usuario)->name,
+            'fecha alta' => $pedido->fechaAlta,
         ];
     });
 
     return response()->json($resultado);
-}
+}/*public function listarPedidosPorUbicacion(Request $request)
+            {
+                $ubicacion = $request->input('ubicacion');
 
+                $pedidos = Pedido::where('estado', 'abierto')
+                    ->whereHas('suministros', function ($query) use ($ubicacion) {
+                        $query->where('ubicacion', $ubicacion);
+                    })
+                    ->orderBy('fechaAlta', 'asc')
+                    ->with(['mesa', 'usuario'])
+                    ->get()
+                    ->map(function ($pedido) {
+                        return [
+                            'noPedido' => $pedido->noPedido,
+                            'nombreMesa' => optional($pedido->mesa)->nombre,
+                            'nombreUsuario' => optional($pedido->usuario)->name,
+                            'fechaAlta' => $pedido->fechaAlta,
+                        ];
+                    });
+
+                return response()->json($pedidos);
+            }
+*/
 
         //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
        public function detallePedidoPorUbicacion($id, Request $request)
@@ -255,8 +291,8 @@ class PedidoController extends Controller
 
     $detalle = $pedido->suministros->map(function ($suministro) {
         return [
-            'idSuministro' => $suministro->id,
-            'nombreSuministro' => $suministro->nombre,
+            //'idSuministro' => $suministro->id,
+            'suministro' => $suministro->nombre,
             'cantidad' => $suministro->pivot->cantidad,
             'notas' => $suministro->pivot->notas,
         ];
