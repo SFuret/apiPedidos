@@ -64,7 +64,6 @@ public function index(): JsonResponse
     {
         $suministro = Suministro::findOrFail($id);
         $validated = $request->validate([
-           // 'numPedido' => 'sometimes|string|unique:suministros,numPedido,' . $suministro->id,
             'nombre' => 'sometimes|string|max:100',
             'precio' => 'sometimes|numeric',
             'categoria' => 'nullable|string|max:50',
@@ -73,7 +72,6 @@ public function index(): JsonResponse
             'marca' => 'nullable|string|max:50',
             'fechaCaducidad' => 'nullable|date',
             'fechaAlta' => 'nullable|date',
-            //'cantidad' => 'sometimes|integer',
             'cantidad' => 'required|integer|min:1', //obliga a que sea un valor entero positivo o vacío
             'ubicacion' => 'nullable|in:bar,cocina',
         ]);
