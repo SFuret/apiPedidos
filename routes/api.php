@@ -12,24 +12,30 @@ use Illuminate\Support\Facades\Artisan;
 
 
 // Proteger las rutas que solo entren los usuarios autenticados
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Endpoint para obtener token
+
 Route::post('/login', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
-        return response()->json([
-            'message' => 'Credenciales inválidas'
-        ], 401);
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
     }
 
     return response()->json([
         'token' => $user->createToken('api-token')->plainTextToken,
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'rol' => $user->rol,
+        ],
     ]);
 });
+
+
 
 // CRUD de mesas
 Route::apiResource('mesas', MesaController::class);
