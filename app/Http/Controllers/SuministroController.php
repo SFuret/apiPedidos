@@ -46,7 +46,7 @@ public function index(): JsonResponse
             'marca' => 'nullable|string|max:50',
             'fechaCaducidad' => 'nullable|date',
             'fechaAlta' => 'nullable|date',
-            'cantidad' => 'required|integer',
+            'cantidad' => 'required|integer|min:1',
             'ubicacion' => 'required|in:bar,cocina',
         ]);
 
@@ -73,7 +73,9 @@ public function index(): JsonResponse
             'marca' => 'nullable|string|max:50',
             'fechaCaducidad' => 'nullable|date',
             'fechaAlta' => 'nullable|date',
-            'cantidad' => 'sometimes|integer',
+            //'cantidad' => 'sometimes|integer',
+            'cantidad' => 'required|integer|min:1', //obliga a que sea un valor entero positivo o vacío
+            'ubicacion' => 'nullable|in:bar,cocina',
         ]);
 
         $suministro->update($validated);

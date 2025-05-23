@@ -32,6 +32,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
+            'rol' => 'required|string|in:bar,cocina,administrador,salon',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -50,6 +51,7 @@ class UserController extends Controller
             'name' => 'sometimes|string|max:255',
             'email' => ['sometimes', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => 'sometimes|string|min:6',
+            'rol' => 'required|string|in:bar,cocina,administrador,salon',
         ]);
 
         if (isset($validated['password'])) {

@@ -256,29 +256,7 @@ public function index(): JsonResponse
     });
 
     return response()->json($resultado);
-}/*public function listarPedidosPorUbicacion(Request $request)
-            {
-                $ubicacion = $request->input('ubicacion');
-
-                $pedidos = Pedido::where('estado', 'abierto')
-                    ->whereHas('suministros', function ($query) use ($ubicacion) {
-                        $query->where('ubicacion', $ubicacion);
-                    })
-                    ->orderBy('fechaAlta', 'asc')
-                    ->with(['mesa', 'usuario'])
-                    ->get()
-                    ->map(function ($pedido) {
-                        return [
-                            'noPedido' => $pedido->noPedido,
-                            'nombreMesa' => optional($pedido->mesa)->nombre,
-                            'nombreUsuario' => optional($pedido->usuario)->name,
-                            'fechaAlta' => $pedido->fechaAlta,
-                        ];
-                    });
-
-                return response()->json($pedidos);
-            }
-*/
+}
 
         //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
        public function detallePedidoPorUbicacion($id, Request $request)
