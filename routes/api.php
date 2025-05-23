@@ -35,8 +35,8 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
-
-
+//protejo las rutas para que solo los usuarios autenticados y con un token válido puedan acceder, el token debe mandarse en las cabeceras de todas las peticiones
+Route::middleware('auth:sanctum')->group(function () {
 // CRUD de mesas
 Route::apiResource('mesas', MesaController::class);
 
@@ -82,7 +82,7 @@ Route::get('/pedidosubicacion', [PedidoController::class, 'listarPedidosPorUbica
 //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
 Route::get('/pedidodetalles/{id}/detalles', [PedidoController::class, 'detallePedidoPorUbicacion']);
 
-
+});
 
 
 
@@ -93,7 +93,7 @@ Route::get('/pedidodetalles/{id}/detalles', [PedidoController::class, 'detallePe
     return 'Migraciones y seeders ejecutados';
 });*/
 
-Route::get('/', fn () => 'Hola desde Railway');
+//Route::get('/', fn () => 'Hola desde Railway');
 
 
 

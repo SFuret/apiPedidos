@@ -22,7 +22,7 @@ public function index(): JsonResponse
             'nombre' => $s->nombre,
             'precio' => $s->precio,
             'categoria' => $s->categoria,
-            //'detalles' => $s->detalles,
+            'detalles' => $s->detalles,
             'marca' => $s->marca,
             'fechaCaducidad' => $s->fechaCaducidad,
             'cantidad' => $s->cantidad,
