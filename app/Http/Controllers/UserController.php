@@ -18,7 +18,7 @@ class UserController extends Controller
             'nombre' => $user->name,
             'email' => $user->email,
             'rol'=>$user->rol,
-            'fecha alta' => $user->created_at ? $user->created_at->format('Y-m-d H:i') : null,
+            'fechaAlta' => $user->created_at ? $user->created_at->format('Y-m-d H:i') : null,
             'última actualización' => $user->updated_at ? $user->updated_at->format('Y-m-d H:i') : null,
         ];
     });

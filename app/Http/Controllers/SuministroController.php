@@ -27,7 +27,7 @@ public function index(): JsonResponse
             'fechaCaducidad' => $s->fechaCaducidad,
             'cantidad' => $s->cantidad,
             'ubicacion' => $s->ubicacion,
-            'fecha alta' => $s->created_at ? $s->created_at->format('Y-m-d H:i') : null,
+            'fechaAlta' => $s->created_at ? $s->created_at->format('Y-m-d H:i') : null,
             'última actualización' => $s->updated_at ? $s->updated_at->format('Y-m-d H:i') : null,
         ];
     });

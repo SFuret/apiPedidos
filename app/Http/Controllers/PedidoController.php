@@ -21,7 +21,7 @@ public function index(): JsonResponse
             'mesa' => $pedido->mesa ? $pedido->mesa->nombre : null,
             'usuario' => $pedido->usuario ? $pedido->usuario->name : null,
             'estado' => $pedido->estado,
-            'fecha alta' => $pedido->created_at ? $pedido->created_at->format('Y-m-d H:i') : null,
+            'fechaAlta' => $pedido->created_at ? $pedido->created_at->format('Y-m-d H:i') : null,
             'última actualización' => $pedido->updated_at ? $pedido->updated_at->format('Y-m-d H:i') : null,
         ];
     });
@@ -251,7 +251,7 @@ public function index(): JsonResponse
             'noPedido' => $pedido->noPedido,
             'Mesa' => optional($pedido->mesa)->nombre,
             'Usuario' => optional($pedido->usuario)->name,
-            'fecha alta' => $pedido->fechaAlta,
+            'fechaAlta' => $pedido->fechaAlta,
         ];
     });
 

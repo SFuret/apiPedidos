@@ -19,7 +19,7 @@ public function index(): JsonResponse
             'id' => $mesa->id,
             'nombre' => $mesa->nombre,
             'barra' => $mesa->barra ? 'sí' : 'no',
-            'fecha alta' => $mesa->created_at ? $mesa->created_at->format('Y-m-d H:i') : null,
+            'fechaAlta' => $mesa->created_at ? $mesa->created_at->format('Y-m-d H:i') : null,
             'última actualización' => $mesa->updated_at ? $mesa->updated_at->format('Y-m-d H:i') : null,
         ];
     });
