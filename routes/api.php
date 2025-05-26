@@ -11,12 +11,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 
-// Proteger las rutas que solo entren los usuarios autenticados
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 
+//loguearse y obtener un token
 Route::post('/login', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
@@ -85,15 +82,6 @@ Route::get('/pedidodetalles/{id}/detalles', [PedidoController::class, 'detallePe
 });
 
 
-
-
-//ruta para ejecutar las migraciones
-/*Route::get('/run-migrations', function () {
-    Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-    return 'Migraciones y seeders ejecutados';
-});*/
-
-//Route::get('/', fn () => 'Hola desde Railway');
 
 
 

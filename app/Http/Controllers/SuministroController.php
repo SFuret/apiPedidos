@@ -92,7 +92,7 @@ public function index(): JsonResponse
     //obtener las distintas categorias
    public function obtenerCategorias(): JsonResponse
     {
-     //  $categorias = DB::select('SELECT DISTINCT categoria FROM suministros');
+    
       $categorias = DB::table('suministros')
         ->select('categoria')
         ->distinct()

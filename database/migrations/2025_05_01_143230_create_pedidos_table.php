@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('pedidos', function (Blueprint $table) {
-            $table->bigIncrements('noPedido');        // AUTO_INCREMENT PRIMARY KEY
+            $table->bigIncrements('noPedido');
             $table->unsignedBigInteger('idMesa')->nullable();
             $table->unsignedBigInteger('idUsuario')->nullable();
             $table->string('estado', 50);
@@ -25,9 +23,6 @@ return new class extends Migration
 
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pedidos');

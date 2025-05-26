@@ -12,7 +12,7 @@ class Pedido extends Model
     use HasFactory;
 
     protected $primaryKey = 'noPedido';
-    public $incrementing = true;               // ya viene por defecto, pero lo dejamos explícito
+    public $incrementing = true;
     protected $keyType = 'int';
 
 
@@ -37,7 +37,7 @@ class Pedido extends Model
          ->withTimestamps();
     }
 
-    //para que funcione el mostrar nombre mesa en vez de id y lo mismo con usuario
+    //para mostrar nombre mesa en vez de id y lo mismo con usuario
         public function mesa()
     {
         return $this->belongsTo(Mesa::class, 'idMesa');

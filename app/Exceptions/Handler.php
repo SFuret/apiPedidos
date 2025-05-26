@@ -31,7 +31,7 @@ class Handler extends ExceptionHandler
 
 public function render($request, Throwable $exception)
 {
-    // Si es una petición a la API (ej. desde Postman o fetch)
+    // Si es una petición a la API desde Postamn
     if ($request->is('api/*') || $request->expectsJson()) {
         $status = 500;
 

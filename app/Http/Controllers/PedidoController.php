@@ -35,7 +35,6 @@ public function index(): JsonResponse
             'idMesa' => 'required|integer|exists:mesas,id',
             'idUsuario' => 'required|integer|exists:users,id',
             'estado' => 'required|string|max:50',
-          //  'fechaAlta' => 'nullable|date'
         ]);
 
         $pedido = Pedido::create($validated);
@@ -86,14 +85,14 @@ public function index(): JsonResponse
 
     DB::beginTransaction();
     try {
-        // 1. Crear el pedido
+        // Crear el pedido
         $pedido = Pedido::create([
             'idMesa'    => $validated['idMesa'],
             'idUsuario' => $validated['idUsuario'],
             'estado'    => $validated['estado'],
         ]);
 
-        // 2. Asociar los suministros
+        // Asociar los suministros
         foreach ($validated['suministros'] as $item) {
             $pedido->suministros()->attach($item['suministro_id'], [
                 'cantidad' => $item['cantidad'],
@@ -118,7 +117,7 @@ public function index(): JsonResponse
         });
 
         return response()->json([
-           // 'pedido'      => $pedido->codigo, // ← Usa el accessor
+
             'pedido'      => $pedido->noPedido,
             'suministros' => $datos,
         ], 201);
@@ -204,12 +203,12 @@ public function index(): JsonResponse
         {
             $pedido = Pedido::findOrFail($pedidoId);
 
-            // Verificamos si existe la relación
+            // Verifico si existe la relación
             if (!$pedido->suministros()->where('suministro_id', $suministroId)->exists()) {
                 return response()->json(['message' => 'Suministro no encontrado en el pedido'], 404);
             }
 
-            // Desvincula el suministro del pedido
+            // Desvinculo el suministro del pedido
             $pedido->suministros()->detach($suministroId);
 
             return response()->json(['message' => 'Suministro eliminado del pedido correctamente']);
@@ -243,7 +242,7 @@ public function index(): JsonResponse
     if ($pedidos->isEmpty()) {
         return response()->json([
             'mensaje' => 'No hay pedidos pendientes'
-        ], 200); // o 404 si lo prefieres
+        ], 200);
     }
 
     $resultado = $pedidos->map(function ($pedido) {
@@ -261,7 +260,7 @@ public function index(): JsonResponse
         //Obtener los suministros asociados a un pedido (es para mostarlo al cocinero/bar)
        public function detallePedidoPorUbicacion($id, Request $request)
 {
-    $ubicacion = $request->input('ubicacion', 'cocina'); // por defecto: cocina
+    $ubicacion = $request->input('ubicacion', 'cocina'); // por defecto cocina
 
     $pedido = Pedido::with(['suministros' => function ($query) use ($ubicacion) {
         $query->where('ubicacion', $ubicacion);
